@@ -1,0 +1,51 @@
+{
+  "name": "navbar-test",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.26",
+    "@fortawesome/free-solid-svg-icons": "^5.12.0",
+    "@fortawesome/react-fontawesome": "^0.1.8",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.19.0",
+    "dotenv": "^8.2.0",
+    "env-cmd": "^10.0.1",
+    "eslint": "^6.8.0",
+    "jwt-decode": "^2.2.0",
+    "moment": "^2.24.0",
+    "react": "^16.12.0",
+    "react-columns": "^1.2.1",
+    "react-dom": "^16.12.0",
+    "react-loading": "^2.0.3",
+    "react-moment": "^0.9.7",
+    "react-redux": "^7.1.3",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.3.0",
+    "redux": "^4.0.4",
+    "redux-logger": "^3.0.6",
+    "redux-promise-middleware": "^6.1.2"
+  },
+  "scripts": {
+    "start": "env-cmd -f .env.development.local react-scripts start",
+    "build": "env-cmd -f .env.production.local react-scripts build",
+    "test": " env-cmd -f.env.development.local react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

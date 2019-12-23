@@ -1,0 +1,15 @@
+.welcome {
+  padding: 9.8em 1.5em 1em;
+  height: 100%;
+  width: 100%;
+}
+
+.welcome img {
+  margin: 0 auto;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.welcome h1 {
+  text-align: center;
+}

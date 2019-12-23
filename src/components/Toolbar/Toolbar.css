@@ -1,0 +1,132 @@
+.toolbar {
+  position: fixed;
+  width: 100%;
+  background: #fff;
+  top: 0;
+  left: 0;
+  height: 90px;
+  z-index: 1;
+}
+
+.link {
+  padding-top: 8px;
+}
+
+.toolbar__line {
+  background: #e5e5e5;
+  height: 5px;
+  margin-top: -0px;
+}
+
+.toolbar__navigation {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  padding: 0 1.5rem;
+}
+
+.toolbar__search {
+  flex: 1;
+  padding: 0 30px;
+}
+
+.toolbar__search input {
+  border: none;
+  border-radius: 7px;
+  background: #dadada;
+  font-weight: bold;
+  height: 35px;
+  font-size: 15px;
+  width: 100%;
+  max-width: 400x;
+  padding-left: 35px;
+  margin-left: 22px;
+  height: 40px;
+}
+
+.toolbar__search div {
+  display: block;
+  position: fixed;
+  top: 34px;
+  margin-left: 32px;
+  cursor: pointer;
+}
+
+.toolbar__navigation-items {
+  padding-top: 30px;
+}
+
+.toolbar__navigation-items a {
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  padding-top: 6px;
+  text-decoration: none;
+}
+
+.toolbar__navigation-items ul {
+  list-style: none;
+  display: flex;
+}
+
+.toolbar__navigation-items li {
+  padding: 0 1rem;
+}
+
+.toolbar__navigation-items div a {
+  margin-left: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #9b9b9b;
+  margin-top: 2px;
+}
+
+.toolbar__navigation-items a:hover,
+.toolbar__navigation-items a:active {
+  color: rgb(46, 26, 221);
+}
+
+.toolbar__navigation-items img {
+  border-radius: 100%;
+  width: 38px;
+  height: 40px;
+}
+
+.toolbar__navigation-items div {
+  display: flex;
+}
+
+.toolbar__navigation-items hr {
+  width: 1px;
+  background: #cecece;
+  height: 48px;
+  margin-top: -8px;
+  right: 0;
+  margin-right: 230px;
+  position: fixed;
+}
+
+.toolbar__logo {
+  margin-left: 0.2rem;
+  margin-top: -24px;
+}
+
+@media (max-width: 1000px) {
+  .toolbar__search {
+    margin-right: 64px;
+  }
+  .toolbar__navigation-items {
+    display: none;
+  }
+}
+
+.toolbar__toggle-button {
+  position: fixed;
+  right: 0;
+}
+
+@media (min-width: 1001px) {
+  .toolbar__toggle-button {
+    display: none;
+  }
+}

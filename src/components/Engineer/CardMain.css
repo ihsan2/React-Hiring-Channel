@@ -1,0 +1,54 @@
+.main1 {
+  padding: 9.8em 1.5em 1em;
+  column-count: 6;
+  margin-top: 0px;
+}
+#img1 {
+  width: 100%;
+  margin-bottom: 2em;
+  padding: 0.2em 0.1em;
+  border-radius: 25px;
+}
+
+.main__profile {
+  width: 98.5%;
+  height: 140px;
+  margin-left: 0px;
+  padding: 0em 0.5em;
+  border: none;
+  border-radius: 0px 0px 22px 22px;
+  background: rgb(0, 0, 0, 0.8);
+  opacity: 0.8;
+  margin-left: 1.5px;
+  margin-top: -175px;
+}
+
+@media (max-width: 1200px) {
+  .main {
+    column-count: 5;
+  }
+}
+
+@media (max-width: 1000px) {
+  .main {
+    column-count: 4;
+  }
+}
+
+@media (max-width: 800px) {
+  .main {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 600px) {
+  .main {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 400px) {
+  .main {
+    column-count: 1;
+  }
+}
