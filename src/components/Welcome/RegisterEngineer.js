@@ -73,7 +73,7 @@ export class RegisterEngineer extends Component {
           <h1>Register Engineer</h1>
           <form onSubmit={this.handlerSubmit}>
             <td>
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="name">Name</label>
                 <input
                   type="text"
@@ -84,7 +84,7 @@ export class RegisterEngineer extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="email">Email</label>
                 <input
                   type="email"
@@ -95,7 +95,7 @@ export class RegisterEngineer extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="password">Password</label>
                 <input
                   type="password"
@@ -106,7 +106,7 @@ export class RegisterEngineer extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="image">Photo</label>
                 <input
                   type="file"
@@ -117,7 +117,7 @@ export class RegisterEngineer extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="description">Description</label>
                 <select
                   className="form-control"
@@ -146,7 +146,7 @@ export class RegisterEngineer extends Component {
             <td> &nbsp; </td>
             <td> &nbsp; </td>
             <td>
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="skill">Skill</label>
                 <input
                   type="text"
@@ -157,7 +157,7 @@ export class RegisterEngineer extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="location">Location</label>
                 <input
                   type="text"
@@ -168,7 +168,7 @@ export class RegisterEngineer extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="date_of_birth">Date of Birth</label>
                 <input
                   type="date"
@@ -179,7 +179,7 @@ export class RegisterEngineer extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="expected_salary">Expected Salary</label>
                 <input
                   type="number"
@@ -190,7 +190,7 @@ export class RegisterEngineer extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="showcase">Showcase</label>
                 <input
                   type="text"
@@ -237,6 +237,7 @@ export class RegisterEngineer extends Component {
             <td>
               <div>
                 <img
+                  alt="signupimage"
                   src={require("../../assets/signup-image.jpg")}
                   style={{
                     position: "absolute"

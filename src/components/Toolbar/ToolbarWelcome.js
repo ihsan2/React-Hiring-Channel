@@ -13,6 +13,7 @@ const Toolbar = props => {
         <div className="toolbar__logo">
           <Link to="/">
             <img
+              alt=""
               src="https://www.arkademy.com/img/logo%20arkademy-01.9c1222ba.png"
               width="120px"
               height="50px"
@@ -24,16 +25,14 @@ const Toolbar = props => {
           <ul>
             <li>
               <Link to="/login-engineer">
-                <button className="link" className="button-engineer">
+                <button className={("link", "button-engineer")}>
                   Engineer
                 </button>
               </Link>
             </li>
             <li>
               <Link to="/login-company">
-                <button className="link" className="button-company">
-                  Company
-                </button>
+                <button className={("link", "button-company")}>Company</button>
               </Link>
             </li>
           </ul>

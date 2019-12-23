@@ -13,12 +13,12 @@ const SideDrawerWelcome = props => {
       <ul>
         <div>
           <li>
-            <button className="link" className="button-engineer">
+            <button className={("link", "button-engineer")}>
               <Link to="/home"> Engineer </Link>
             </button>
           </li>
           <li>
-            <button className="link" className="button-company">
+            <button className={("link", "button-company")}>
               <Link to="/home"> Company </Link>
             </button>
           </li>

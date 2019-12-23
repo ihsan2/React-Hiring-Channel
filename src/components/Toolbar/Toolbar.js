@@ -9,7 +9,7 @@ import {
   faSearch
 } from "@fortawesome/free-solid-svg-icons";
 import DrawerToggleButton from "../SideDrawer/DrawerToggleButton";
-import { BrowserRouter as Router, Link, withRouter } from "react-router-dom";
+import { BrowserRouter as Router, withRouter } from "react-router-dom";
 
 class Toolbar extends Component {
   constructor(props) {
@@ -34,15 +34,15 @@ class Toolbar extends Component {
     const decoded = jwt_decode(token);
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/engineers/${decoded.id}`)
-      .then(response =>
+      .then(response => {
         response.data.data.map(en => {
-          this.setState({
+          return this.setState({
             id: en.id,
             name: en.name,
             image: en.image
           });
-        })
-      );
+        });
+      });
   }
 
   render() {
@@ -57,6 +57,7 @@ class Toolbar extends Component {
             <div className="toolbar__logo">
               <a href="/">
                 <img
+                  alt=""
                   src="https://www.arkademy.com/img/logo%20arkademy-01.9c1222ba.png"
                   width="120px"
                   height="50px"
@@ -85,6 +86,7 @@ class Toolbar extends Component {
                 <li>
                   <div>
                     <img
+                      alt=""
                       src={`${process.env.REACT_APP_HOST}/engineer/${this.state.image}`}
                     ></img>
                     {/* <Link to="/profil"> */}
@@ -97,7 +99,7 @@ class Toolbar extends Component {
                 <hr></hr>
                 <div style={{ marginLeft: "75px" }}>
                   <li>
-                    <a href="#">
+                    <a href="/#">
                       <FontAwesomeIcon
                         icon={faCommentDots}
                         color="#9B9B9B"
@@ -107,7 +109,8 @@ class Toolbar extends Component {
                   </li>
                   <li>
                     <a
-                      onClick={this.Logout.bind(this)}
+                      href="/#"
+                      onClick={this.Logout}
                       style={{
                         cursor: "pointer"
                       }}

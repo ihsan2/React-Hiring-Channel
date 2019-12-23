@@ -1,48 +1,35 @@
 import React, { Component } from "react";
-import axios from "axios";
 import CardMainCompany from "./CardMainCompany";
 import HeaderMain from "../Header/HeaderMain";
 import ReactLoading from "react-loading";
+import { connect } from "react-redux";
+import { getCompanies } from "../../public/redux/actions/companies";
 
-export default class Main extends Component {
+class MainCompany extends Component {
   constructor() {
     super();
     this.state = {
-      search: "",
-      company: [],
-      isLoading: false
+      search: ""
     };
   }
 
-  onSearch = e => {
-    this.setState({ search: e.target.value, isLoading: true });
-    axios
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/companies?search=${e.target.value}`
-      )
-      .then(res => {
-        // console.log(res.data)
-        this.setState({
-          company: res.data.data,
-          isLoading: false
-        });
-      });
+  getData() {
+    let url = `${process.env.REACT_APP_BASE_URL}/companies`;
+    this.props.get(url);
+  }
+
+  searchData = e => {
+    this.setState({ search: e.target.value });
+    let url = `${process.env.REACT_APP_BASE_URL}/companies?search=${e.target.value}`;
+    this.props.get(url);
   };
 
   componentDidMount() {
-    this.setState({
-      isLoading: true
-    });
-    axios.get(`${process.env.REACT_APP_BASE_URL}/companies`).then(response =>
-      this.setState({
-        company: response.data.data,
-        isLoading: false
-      })
-    );
+    this.getData();
   }
 
   render() {
-    const renderData = this.state.company.map(company => {
+    const renderData = this.props.company.companyList.map(company => {
       return (
         <div>
           <div>
@@ -54,8 +41,8 @@ export default class Main extends Component {
 
     return (
       <div className="main">
-        <HeaderMain onChange={this.onSearch} search={this.state.search} />
-        {this.state.isLoading && (
+        <HeaderMain onChange={this.searchData} search={this.state.search} />
+        {this.props.company.isLoading && (
           <div
             align="center"
             style={{
@@ -70,27 +57,41 @@ export default class Main extends Component {
             ></ReactLoading>
           </div>
         )}
-        {this.state.company.length !== 0 && !this.state.isLoading && renderData}
-        {this.state.company.length === 0 && !this.state.isLoading && (
-          <div
-            style={{
-              width: "1600px",
-              textAlign: "center",
-              justifyContent: "center"
-            }}
-          >
-            {" "}
-            <h2
+        {this.props.company.companyList.length !== 0 &&
+          !this.props.company.isLoading &&
+          renderData}
+        {this.props.company.companyList.length === 0 &&
+          !this.props.company.isLoading && (
+            <div
               style={{
-                fontWeight: "bold",
-                fontSize: "40px"
+                width: "1600px",
+                textAlign: "center",
+                justifyContent: "center"
               }}
             >
-              Data Not Found
-            </h2>
-          </div>
-        )}
+              {" "}
+              <h2
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "40px"
+                }}
+              >
+                Data Not Found
+              </h2>
+            </div>
+          )}
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    company: state.companyList
+  };
+};
+const mapDispatchToProps = dispatch => ({
+  get: url => dispatch(getCompanies(url))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainCompany);

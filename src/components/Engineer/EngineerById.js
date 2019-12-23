@@ -36,14 +36,14 @@ export default class EngineerById extends Component {
         <div id="page-wrap">
           <img
             src={BackImage}
-            alt="Back Image"
+            alt="backimage"
             id="pic"
             width="220px"
             height="300px"
           />
           <img
             src={`${process.env.REACT_APP_HOST}/engineer/${engineer.image}`}
-            alt={`Image of ${engineer.name}`}
+            alt={engineer.image}
             id="pic1"
             width="200px"
             height="280px"

@@ -162,6 +162,7 @@ export class LoginEngineer extends Component {
             <td>
               <div>
                 <img
+                  alt=""
                   src={require("../../assets/signin-image.jpg")}
                   style={{
                     position: "absolute"

@@ -10,7 +10,7 @@ export class Welcome extends Component {
         <HeaderMain />
         <div className="welcome">
           <h1>Welcome to Hiring Partner Channel</h1>
-          <img src={HiringImg} width="680px" height="320px" />
+          <img alt="" src={HiringImg} width="680px" height="320px" />
         </div>
       </div>
     );

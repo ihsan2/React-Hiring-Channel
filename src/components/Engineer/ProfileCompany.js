@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "../Welcome/RegisterEngineer.css";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 import ToolbarCompany from "../Toolbar/ToolbarCompany";
 
 export class ProfileCompany extends Component {
@@ -83,12 +82,11 @@ export class ProfileCompany extends Component {
 
   componentDidMount() {
     let id = this.props.match.params.id;
-    console.log(id);
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/companies/${id}`)
       .then(response =>
         response.data.data.map(en => {
-          this.setState({
+          return this.setState({
             id: en.id,
             name: en.name,
             email: en.email,
@@ -102,8 +100,6 @@ export class ProfileCompany extends Component {
   }
 
   render() {
-    const token = localStorage.accessToken;
-    const decoded = jwt_decode(token);
     return (
       <div>
         <ToolbarCompany />
@@ -111,11 +107,7 @@ export class ProfileCompany extends Component {
           <h1>Update Profile</h1>
           <form onSubmit={this.handlerSubmit}>
             <td>
-              <div
-                hidden
-                className="form-group"
-                className="register-engineer-div"
-              >
+              <div hidden className={("form-group", "register-engineer-div")}>
                 <label for="id">ID</label>
                 <input
                   type="text"
@@ -127,7 +119,7 @@ export class ProfileCompany extends Component {
                 ></input>
               </div>
 
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="name">Name</label>
                 <input
                   type="text"
@@ -139,7 +131,7 @@ export class ProfileCompany extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="email">Email</label>
                 <input
                   type="email"
@@ -151,7 +143,7 @@ export class ProfileCompany extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="password">Password</label>
                 <input
                   type="password"
@@ -163,7 +155,7 @@ export class ProfileCompany extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="image">Photo</label>
                 <input
                   type="file"
@@ -195,7 +187,7 @@ export class ProfileCompany extends Component {
             <td> &nbsp; </td>
             <td> &nbsp; </td>
             <td>
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="description">Description</label>
                 <textarea
                   name="description"
@@ -206,7 +198,7 @@ export class ProfileCompany extends Component {
                 ></textarea>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="location">Location</label>
                 <input
                   type="text"
@@ -219,7 +211,7 @@ export class ProfileCompany extends Component {
               </div>
 
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <br />
                 <input
                   type="submit"
@@ -258,6 +250,7 @@ export class ProfileCompany extends Component {
             <td>
               <div>
                 <img
+                  alt={this.state.image}
                   src={`${process.env.REACT_APP_HOST}/company/${this.state.image}`}
                   width="200px"
                   height="280px"

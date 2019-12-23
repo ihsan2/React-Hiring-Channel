@@ -1,8 +1,8 @@
 import React from "react";
 import "./CardMainCompany.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faDollarSign } from "@fortawesome/free-solid-svg-icons";
-import { Link, BrowserRouter as Router } from "react-router-dom";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 function CardMainCompany({ company }) {
   let image = company.image;
@@ -16,7 +16,11 @@ function CardMainCompany({ company }) {
       }}
     >
       <Link to={`company-id/${company.id}`}>
-        <img id="img" src={`${process.env.REACT_APP_HOST}/company/${image}`} />
+        <img
+          id="img"
+          alt={image}
+          src={`${process.env.REACT_APP_HOST}/company/${image}`}
+        />
       </Link>
       <div className="main__profile">
         <label

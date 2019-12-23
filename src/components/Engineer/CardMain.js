@@ -2,7 +2,7 @@ import React from "react";
 import "./CardMain.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faDollarSign } from "@fortawesome/free-solid-svg-icons";
-import { Link, BrowserRouter as Router } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function CardMain({ engineer }) {
   let image = engineer.image;
@@ -20,6 +20,7 @@ function CardMain({ engineer }) {
       <Link to={`engineer/${engineer.id}`}>
         <img
           id="img1"
+          alt={image}
           src={`${process.env.REACT_APP_HOST}/engineer/${image}`}
         />
       </Link>

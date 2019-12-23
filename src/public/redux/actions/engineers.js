@@ -1,8 +1,6 @@
 import axios from "axios";
 
-export const getEngineers = test => ({
+export const getEngineers = url => ({
   type: "GET_ENGINEERS",
-  payload: axios.get(
-    `${process.env.REACT_APP_BASE_URL}/engineers?sort=name&limit=12`
-  )
+  payload: axios.get(url)
 });

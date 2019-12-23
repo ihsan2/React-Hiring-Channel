@@ -65,7 +65,7 @@ export class RegisterCompany extends Component {
           <h1>Register Company</h1>
           <form onSubmit={this.handlerSubmit}>
             <td>
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="name">Name</label>
                 <input
                   type="text"
@@ -76,7 +76,7 @@ export class RegisterCompany extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="email">Email</label>
                 <input
                   type="email"
@@ -87,7 +87,7 @@ export class RegisterCompany extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="password">Password</label>
                 <input
                   type="password"
@@ -98,7 +98,7 @@ export class RegisterCompany extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="image">Photo</label>
                 <input
                   type="file"
@@ -120,7 +120,7 @@ export class RegisterCompany extends Component {
             <td> &nbsp; </td>
             <td> &nbsp; </td>
             <td>
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="description">Description</label>
                 <textarea
                   name="description"
@@ -130,7 +130,7 @@ export class RegisterCompany extends Component {
                 ></textarea>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="location">Location</label>
                 <input
                   type="text"
@@ -141,7 +141,7 @@ export class RegisterCompany extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <br />
                 <input
                   type="submit"
@@ -180,6 +180,7 @@ export class RegisterCompany extends Component {
             <td>
               <div>
                 <img
+                  alt=""
                   src={require("../../assets/signup-image.jpg")}
                   style={{
                     position: "absolute"

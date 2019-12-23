@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "../Welcome/RegisterEngineer.css";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 import Toolbar from "../Toolbar/Toolbar";
 
 export class Profile extends Component {
@@ -91,12 +90,11 @@ export class Profile extends Component {
 
   componentDidMount() {
     let id = this.props.match.params.id;
-    console.log(id);
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/engineers/${id}`)
       .then(response =>
         response.data.data.map(en => {
-          this.setState({
+          return this.setState({
             id: en.id,
             name: en.name,
             email: en.email,
@@ -114,8 +112,6 @@ export class Profile extends Component {
   }
 
   render() {
-    const token = localStorage.accessToken;
-    const decoded = jwt_decode(token);
     return (
       <div>
         <Toolbar />
@@ -123,11 +119,7 @@ export class Profile extends Component {
           <h1>Update Profile</h1>
           <form onSubmit={this.handlerSubmit}>
             <td>
-              <div
-                hidden
-                className="form-group"
-                className="register-engineer-div"
-              >
+              <div hidden className={("form-group", "register-engineer-div")}>
                 <label for="id">ID</label>
                 <input
                   type="text"
@@ -139,7 +131,7 @@ export class Profile extends Component {
                 ></input>
               </div>
 
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="name">Name</label>
                 <input
                   type="text"
@@ -151,7 +143,7 @@ export class Profile extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="email">Email</label>
                 <input
                   type="email"
@@ -163,7 +155,7 @@ export class Profile extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="password">Password</label>
                 <input
                   type="password"
@@ -175,7 +167,7 @@ export class Profile extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="image">Photo</label>
                 <input
                   type="file"
@@ -195,7 +187,7 @@ export class Profile extends Component {
                 ></input> */}
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="description">Description</label>
                 <select
                   className="form-control"
@@ -236,7 +228,7 @@ export class Profile extends Component {
             <td> &nbsp; </td>
             <td> &nbsp; </td>
             <td>
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="skill">Skill</label>
                 <input
                   type="text"
@@ -248,7 +240,7 @@ export class Profile extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="location">Location</label>
                 <input
                   type="text"
@@ -260,7 +252,7 @@ export class Profile extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="date_of_birth">Date of Birth</label>
                 <input
                   type="date"
@@ -272,7 +264,7 @@ export class Profile extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="expected_salary">Expected Salary</label>
                 <input
                   type="number"
@@ -284,7 +276,7 @@ export class Profile extends Component {
                 ></input>
               </div>
               <br />
-              <div className="form-group" className="register-engineer-div">
+              <div className={("form-group", "register-engineer-div")}>
                 <label for="showcase">Showcase</label>
                 <input
                   type="text"
@@ -332,6 +324,7 @@ export class Profile extends Component {
             <td>
               <div>
                 <img
+                  alt={this.state.image}
                   src={`${process.env.REACT_APP_HOST}/engineer/${this.state.image}`}
                   width="200px"
                   height="280px"

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import CardMain from "./CardMain";
 import "./PaginationButton.css";
 import HeaderMainCompany from "../Header/HeaderMainCompany";
@@ -12,186 +11,69 @@ class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,
-      isError: false,
       search: "",
       limit: 12,
       order: "name",
-      sort: "ASC",
-      engineer: [],
-      page: []
+      sort: "DESC"
     };
 
-    this.nextPage = this.nextPage.bind(this);
-    this.prevPage = this.prevPage.bind(this);
+    this.nextData = this.nextData.bind(this);
+    this.prevData = this.prevData.bind(this);
   }
 
-  setLimit = e => {
-    this.setState({ limit: e.target.value, isLoading: true, isError: false });
-    axios
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/engineers?limit=${e.target.value}&sort=${this.state.order}&order=${this.state.sort}&searchValue=${this.state.search}`
-      )
-      .then(res => {
-        // console.log(res.data)
-        this.setState({
-          engineer: res.data.data,
-          page: res.data.pageDetail,
-          isLoading: false
-        });
-      })
-      .catch(err => {
-        this.setState({
-          isLoading: false,
-          isError: true
-        });
-      });
+  getData() {
+    let url = `${process.env.REACT_APP_BASE_URL}/engineers?sort=name&limit=12&order=desc`;
+    this.props.get(url);
+  }
+
+  searchData = e => {
+    this.setState({ search: e.target.value });
+    let url = `${process.env.REACT_APP_BASE_URL}/engineers?sort=${this.state.order}&limit=${this.state.limit}&order=${this.state.sort}&searchValue=${e.target.value}`;
+    this.props.get(url);
   };
 
-  setOrder = e => {
-    this.setState({ order: e.target.value, isLoading: true, isError: false });
-    axios
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/engineers?sort=${e.target.value}&limit=${this.state.limit}&order=${this.state.sort}&searchValue=${this.state.search}`
-      )
-      .then(res => {
-        this.setState({
-          engineer: res.data.data,
-          page: res.data.pageDetail,
-          isLoading: false
-        });
-      })
-      .catch(err => {
-        this.setState({
-          isLoading: false,
-          isError: true
-        });
-      });
+  sortData = e => {
+    this.setState({ sort: e.target.value });
+    let url = `${process.env.REACT_APP_BASE_URL}/engineers?sort=${this.state.order}&limit=${this.state.limit}&order=${e.target.value}&searchValue=${this.state.search}`;
+    this.props.get(url);
   };
 
-  setSort = e => {
-    this.setState({ sort: e.target.value, isLoading: true, isError: false });
-    axios
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/engineers?sort=${this.state.order}&limit=${this.state.limit}&order=${e.target.value}&searchValue=${this.state.search}`
-      )
-      .then(res => {
-        // console.log(res.data)
-        this.setState({
-          engineer: res.data.data,
-          page: res.data.pageDetail,
-          isLoading: false
-        });
-      })
-      .catch(err => {
-        this.setState({
-          isLoading: false,
-          isError: true
-        });
-      });
+  orderData = e => {
+    this.setState({ order: e.target.value });
+    let url = `${process.env.REACT_APP_BASE_URL}/engineers?sort=${e.target.value}&limit=${this.state.limit}&order=${this.state.sort}&searchValue=${this.state.search}`;
+    this.props.get(url);
   };
 
-  onSearch = e => {
-    this.setState({ search: e.target.value, isLoading: true, isError: false });
-    axios
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/engineers?sort=${this.state.order}&limit=${this.state.limit}&order=${this.state.sort}&searchValue=${e.target.value}`
-      )
-      .then(res => {
-        // console.log(res.data)
-        this.setState({
-          engineer: res.data.data,
-          page: res.data.pageDetail,
-          isLoading: false,
-          isError: false
-        });
-      })
-      .catch(err => {
-        this.setState({
-          isLoading: false,
-          isError: true
-        });
-      });
+  limitData = e => {
+    this.setState({ limit: e.target.value });
+    let url = `${process.env.REACT_APP_BASE_URL}/engineers?limit=${e.target.value}&sort=${this.state.order}&order=${this.state.sort}&searchValue=${this.state.search}`;
+    this.props.get(url);
   };
 
-  nextPage() {
-    this.setState({ isLoading: true, isError: false });
+  nextData() {
     let next;
-    this.state.page.map(page => {
+    this.props.engineer.pageDetail.map(page => {
       return (next = page.nextLink);
     });
-    axios
-      .get(`http://${next}`)
-      .then(response =>
-        this.setState({
-          engineer: response.data.data,
-          page: response.data.pageDetail,
-          isLoading: false
-        })
-      )
-      .catch(err => {
-        this.setState({
-          isLoading: false,
-          isError: true
-        });
-      });
+    let url = `http://${next}`;
+    this.props.get(url);
   }
 
-  prevPage() {
-    this.setState({ isLoading: true, isError: false });
+  prevData() {
     let prev;
-    this.state.page.map(page => {
+    this.props.engineer.pageDetail.map(page => {
       return (prev = page.prevLink);
     });
-    axios
-      .get(`http://${prev}`)
-      .then(response =>
-        this.setState({
-          engineer: response.data.data,
-          page: response.data.pageDetail,
-          isLoading: false
-        })
-      )
-      .catch(err => {
-        this.setState({
-          isLoading: false,
-          isError: true
-        });
-      });
-  }
-
-  async fetchData() {
-    await this.props.dispatch(getEngineers());
-    // console.log(this.props.engineer.engineerList);
-    // console.log(this.props.engineer.isLoading);
-    this.setState({
-      engineer: this.props.engineer.engineerList,
-      page: this.props.engineer.pageDetail
-    });
+    let url = `http://${prev}`;
+    this.props.get(url);
   }
 
   componentDidMount() {
-    this.fetchData();
-    // axios
-    //   .get(`${process.env.REACT_APP_BASE_URL}/engineers?sort=name&limit=12`)
-    //   .then(response =>
-    //     this.setState({
-    //       engineer: response.data.data,
-    //       page: response.data.pageDetail,
-    //       isLoading: false,
-    //       isError: false
-    //     })
-    //   )
-    //   .catch(err => {
-    //     this.setState({
-    //       isLoading: false,
-    //       isError: true
-    //     });
-    //   });
+    this.getData();
   }
 
   render() {
-    const renderData = this.state.engineer.map(engineer => {
+    const renderData = this.props.engineer.engineerList.map(engineer => {
       return (
         <div>
           <div>
@@ -201,26 +83,40 @@ class Main extends Component {
       );
     });
 
+    let valAsc, valDesc;
+
+    if (this.state.order === "name" || this.state.order === "skill") {
+      valAsc = "A - Z";
+      valDesc = "Z - A";
+    } else if (this.state.order === "date_updated") {
+      valAsc = "Oldest";
+      valDesc = "Newest";
+    } else {
+      valAsc = "Lowest";
+      valDesc = "Highest";
+    }
     let currentPage;
     let totalPage;
-    this.state.page.map(page => {
-      return (currentPage = page.currentPage), (totalPage = page.totalPage);
+    this.props.engineer.pageDetail.map(page => {
+      currentPage = page.currentPage;
+      totalPage = page.totalPage;
+      return true;
     });
 
     return (
       <div className="main1">
         <HeaderMainCompany
-          onChange={this.onSearch}
+          onChange={this.searchData}
           search={this.state.search}
         />
         <div className="pagination">
           {currentPage > 1 ? (
-            <span onClick={this.prevPage} className="span-radius1">
+            <span onClick={this.prevData} className="span-radius1">
               Prev
             </span>
           ) : (
             <span
-              onClick={this.prevPage}
+              onClick={this.prevData}
               className="span-radius1"
               style={{
                 pointerEvents: "none"
@@ -234,12 +130,12 @@ class Main extends Component {
             {currentPage} / {totalPage}{" "}
           </span>
           {totalPage > currentPage ? (
-            <span onClick={this.nextPage} className="span-radius2">
+            <span onClick={this.nextData} className="span-radius2">
               Next
             </span>
           ) : (
             <span
-              onClick={this.nextPage}
+              onClick={this.nextData}
               className="span-radius2"
               style={{
                 pointerEvents: "none"
@@ -250,7 +146,7 @@ class Main extends Component {
           )}
 
           <label className="label-option">Limit</label>
-          <select onChange={this.setLimit} align="center">
+          <select onChange={this.limitData} align="center">
             <option value="6">6</option>
             <option value="12" selected>
               12
@@ -262,7 +158,7 @@ class Main extends Component {
           </select>
 
           <label className="label-option">Order By</label>
-          <select onChange={this.setOrder} align="center">
+          <select onChange={this.orderData} align="center">
             <option value="name">Name</option>
             <option value="skill">Skill</option>
             <option value="date_updated">Date Updated</option>
@@ -270,12 +166,12 @@ class Main extends Component {
           </select>
 
           <label className="label-option">Sort</label>
-          <select onChange={this.setSort} align="center">
-            <option value="ASC">ASC</option>
-            <option value="DESC">DESC</option>
+          <select onChange={this.sortData} align="center">
+            <option value="DESC">{valDesc}</option>
+            <option value="ASC">{valAsc}</option>
           </select>
         </div>
-        {this.state.isLoading && (
+        {this.props.engineer.isLoading && (
           <div
             align="center"
             style={{
@@ -290,8 +186,10 @@ class Main extends Component {
             ></ReactLoading>
           </div>
         )}
-        {!this.state.isError && !this.state.isLoading && renderData}
-        {this.state.isError && !this.state.isLoading && (
+        {this.props.engineer.isFulfilled &&
+          !this.props.engineer.isLoading &&
+          renderData}
+        {this.props.engineer.isRejected && !this.props.engineer.isLoading && (
           <div
             style={{
               width: "1600px",
@@ -305,7 +203,7 @@ class Main extends Component {
                 fontSize: "40px"
               }}
             >
-              Data Not Found
+              No results
             </h2>
           </div>
         )}
@@ -313,10 +211,14 @@ class Main extends Component {
     );
   }
 }
+
 const mapStateToProps = state => {
   return {
     engineer: state.engineerList
   };
 };
+const mapDispatchToProps = dispatch => ({
+  get: url => dispatch(getEngineers(url))
+});
 
-export default connect(mapStateToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

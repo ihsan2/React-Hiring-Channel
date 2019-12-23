@@ -9,7 +9,7 @@ import {
   faSearch
 } from "@fortawesome/free-solid-svg-icons";
 import DrawerToggleButton from "../SideDrawer/DrawerToggleButton";
-import { BrowserRouter as Router, Link, withRouter } from "react-router-dom";
+import { BrowserRouter as Router, withRouter } from "react-router-dom";
 
 class ToolbarCompany extends Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class ToolbarCompany extends Component {
       .get(`${process.env.REACT_APP_BASE_URL}/companies/${decoded.id}`)
       .then(response =>
         response.data.data.map(engineer => {
-          this.setState({
+          return this.setState({
             id: engineer.id,
             name: engineer.name,
             image: engineer.image
@@ -59,6 +59,7 @@ class ToolbarCompany extends Component {
             <div className="toolbar__logo">
               <a href="/">
                 <img
+                  alt=""
                   src="https://www.arkademy.com/img/logo%20arkademy-01.9c1222ba.png"
                   width="120px"
                   height="50px"
@@ -92,6 +93,7 @@ class ToolbarCompany extends Component {
                 <li>
                   <div>
                     <img
+                      alt=""
                       src={`${process.env.REACT_APP_HOST}/company/${this.state.image}`}
                     ></img>
                     {/* <Link to="/profil"> */}
@@ -104,7 +106,7 @@ class ToolbarCompany extends Component {
                 <hr></hr>
                 <div style={{ marginLeft: "75px" }}>
                   <li>
-                    <a href="#">
+                    <a href="/#">
                       <FontAwesomeIcon
                         icon={faCommentDots}
                         color="#9B9B9B"
@@ -114,7 +116,8 @@ class ToolbarCompany extends Component {
                   </li>
                   <li>
                     <a
-                      onClick={this.Logout.bind(this)}
+                      href="/#"
+                      onClick={this.Logout}
                       style={{
                         cursor: "pointer"
                       }}

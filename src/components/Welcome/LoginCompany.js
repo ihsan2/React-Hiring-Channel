@@ -6,7 +6,6 @@ import ReactLoading from "react-loading";
 
 export class LoginCompany extends Component {
   constructor() {
-    let loggedIn = false;
     super();
     this.state = {
       email: "",
@@ -147,6 +146,7 @@ export class LoginCompany extends Component {
             <td>
               <div>
                 <img
+                  alt=""
                   src={require("../../assets/signin-image.jpg")}
                   style={{
                     position: "absolute"
