@@ -1,7 +1,14 @@
 import React, { Component } from "react";
 import "../Welcome/RegisterEngineer.css";
-import axios from "axios";
+import swal from "sweetalert";
 import ToolbarCompany from "../Toolbar/ToolbarCompany";
+import ReactLoading from "react-loading";
+import { connect } from "react-redux";
+import {
+  getCompany,
+  updateCompany,
+  deleteCompany
+} from "../../public/redux/actions/companies";
 
 export class ProfileCompany extends Component {
   constructor() {
@@ -47,125 +54,121 @@ export class ProfileCompany extends Component {
     formData.append("description", this.state.description);
     formData.append("location", this.state.location);
 
-    axios({
-      method: "PUT",
-      url: `${process.env.REACT_APP_BASE_URL}/companies/${this.state.id}`,
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    })
-      .then(res => {
-        alert("Success Update Company");
-        this.props.history.push(`/company/${this.state.id}`);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    let url = `${process.env.REACT_APP_BASE_URL}/companies/${this.state.id}`;
+    this.props.update(url, formData);
+    setTimeout(
+      function() {
+        swal("Success!", "Success Update Company", "success").then(isOk => {
+          isOk && this.props.history.push(`/company/${this.state.id}`);
+        });
+      }.bind(this),
+      1000
+    );
   };
 
   deleteAccount = async event => {
     event.preventDefault();
-    axios({
-      method: "DELETE",
-      url: `${process.env.REACT_APP_BASE_URL}/companies/${this.state.id}`
-    })
-      .then(res => {
-        alert("Success Delete Account");
+    let url = `${process.env.REACT_APP_BASE_URL}/companies/${this.state.id}`;
+
+    swal({
+      title: "Delete Account!",
+      text: "Are you sure want to delete your account?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(isOk => {
+      if (isOk) {
+        this.props.delete(url);
         localStorage.removeItem("accessToken");
-        this.props.history.push(`/register-company`);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+        this.props.history.push("/");
+        swal("Success!", "You success delete your account", "success");
+      }
+    });
   };
 
   componentDidMount() {
     let id = this.props.match.params.id;
-    axios
-      .get(`${process.env.REACT_APP_BASE_URL}/companies/${id}`)
-      .then(response =>
-        response.data.data.map(en => {
-          return this.setState({
-            id: en.id,
-            name: en.name,
-            email: en.email,
-            password: en.password,
-            image: en.image,
-            description: en.description,
-            location: en.location
-          });
-        })
-      );
+    let url = `${process.env.REACT_APP_BASE_URL}/companies/${id}`;
+    this.props.get(url).then(() =>
+      this.props.company.companyList.map(en => {
+        return this.setState({
+          id: en.id,
+          name: en.name,
+          email: en.email,
+          password: en.password,
+          image: en.image,
+          description: en.description,
+          location: en.location
+        });
+      })
+    );
   }
 
   render() {
-    return (
-      <div>
-        <ToolbarCompany />
-        <div className="register-engineer">
-          <h1>Update Profile</h1>
-          <form onSubmit={this.handlerSubmit}>
-            <td>
-              <div hidden className={("form-group", "register-engineer-div")}>
-                <label for="id">ID</label>
-                <input
-                  type="text"
-                  name="id"
-                  className="form-control"
-                  onChange={this.handlerChange}
-                  required
-                  value={this.state.id}
-                ></input>
-              </div>
+    const renderData = (
+      <div className="register-engineer">
+        <h1>Update Profile</h1>
+        <form onSubmit={this.handlerSubmit}>
+          <td>
+            <div hidden className={("form-group", "register-engineer-div")}>
+              <label for="id">ID</label>
+              <input
+                type="text"
+                name="id"
+                className="form-control"
+                onChange={this.handlerChange}
+                required
+                value={this.state.id}
+              ></input>
+            </div>
 
-              <div className={("form-group", "register-engineer-div")}>
-                <label for="name">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  className="form-control"
-                  onChange={this.handlerChange}
-                  required
-                  value={this.state.name}
-                ></input>
-              </div>
-              <br />
-              <div className={("form-group", "register-engineer-div")}>
-                <label for="email">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  className="form-control"
-                  onChange={this.handlerChange}
-                  required
-                  value={this.state.email}
-                ></input>
-              </div>
-              <br />
-              <div className={("form-group", "register-engineer-div")}>
-                <label for="password">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  className="form-control"
-                  onChange={this.handlerChange}
-                  required
-                  value={this.state.password}
-                ></input>
-              </div>
-              <br />
-              <div className={("form-group", "register-engineer-div")}>
-                <label for="image">Photo</label>
-                <input
-                  type="file"
-                  name="image"
-                  className="form-control"
-                  onChange={this.handlerChangeImage}
-                  required
-                  // value={this.state.name}
-                ></input>
-                {/* <input
+            <div className={("form-group", "register-engineer-div")}>
+              <label for="name">Name</label>
+              <input
+                type="text"
+                name="name"
+                className="form-control"
+                onChange={this.handlerChange}
+                required
+                value={this.state.name}
+              ></input>
+            </div>
+            <br />
+            <div className={("form-group", "register-engineer-div")}>
+              <label for="email">Email</label>
+              <input
+                type="email"
+                name="email"
+                className="form-control"
+                onChange={this.handlerChange}
+                required
+                value={this.state.email}
+              ></input>
+            </div>
+            <br />
+            <div className={("form-group", "register-engineer-div")}>
+              <label for="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                className="form-control"
+                onChange={this.handlerChange}
+                required
+                value={this.state.password}
+              ></input>
+            </div>
+            <br />
+            <div className={("form-group", "register-engineer-div")}>
+              <label for="image">Photo</label>
+              <input
+                type="file"
+                name="image"
+                className="form-control"
+                onChange={this.handlerChangeImage}
+                required
+                // value={this.state.name}
+              ></input>
+              {/* <input
                   type="text"
                   name="imageTmp"
                   className="form-control"
@@ -173,44 +176,53 @@ export class ProfileCompany extends Component {
                   required
                   value={engineer.image}
                 ></input> */}
-              </div>
-              <br />
+            </div>
+            <br />
 
-              <br />
-            </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td>
-              <div className={("form-group", "register-engineer-div")}>
-                <label for="description">Description</label>
-                <textarea
-                  name="description"
-                  className="form-control"
-                  onChange={this.handlerChange}
-                  required
-                  value={this.state.description}
-                ></textarea>
-              </div>
-              <br />
-              <div className={("form-group", "register-engineer-div")}>
-                <label for="location">Location</label>
-                <input
-                  type="text"
-                  name="location"
-                  className="form-control"
-                  onChange={this.handlerChange}
-                  required
-                  value={this.state.location}
-                ></input>
-              </div>
+            <br />
+          </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td>
+            <div className={("form-group", "register-engineer-div")}>
+              <label for="description">Description</label>
+              <textarea
+                name="description"
+                className="form-control"
+                onChange={this.handlerChange}
+                required
+                value={this.state.description}
+              ></textarea>
+            </div>
+            <br />
+            <div className={("form-group", "register-engineer-div")}>
+              <label for="location">Location</label>
+              <input
+                type="text"
+                name="location"
+                className="form-control"
+                onChange={this.handlerChange}
+                required
+                value={this.state.location}
+              ></input>
+            </div>
 
-              <br />
+            <br />
+            {this.props.company.isLoadingUpdate ? (
+              <div
+                style={{
+                  float: "right"
+                }}
+              >
+                <ReactLoading type={"spokes"} color="#000" />
+              </div>
+            ) : (
               <div className={("form-group", "register-engineer-div")}>
                 <br />
                 <input
@@ -222,71 +234,105 @@ export class ProfileCompany extends Component {
                   }}
                 ></input>
               </div>
-            </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td> &nbsp; </td>
-            <td>
-              <div>
-                <img
-                  alt={this.state.image}
-                  src={`${process.env.REACT_APP_HOST}/company/${this.state.image}`}
-                  width="200px"
-                  height="280px"
-                  style={{
-                    position: "absolute",
-                    borderRadius: "20px",
-                    margin: "80px 0"
-                  }}
-                />
-
-                <button
-                  onClick={this.deleteAccount}
-                  className="btn btn-danger"
-                  style={{
-                    marginLeft: "30px",
-                    marginTop: "400px",
-                    position: "absolute"
-                  }}
-                >
-                  Delete Account
-                </button>
-              </div>
-              <div
+            )}
+          </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td> &nbsp; </td>
+          <td>
+            <div>
+              <img
+                alt={this.state.image}
+                src={`${process.env.REACT_APP_HOST}/company/${this.state.image}`}
+                width="200px"
+                height="280px"
                 style={{
                   position: "absolute",
-                  bottom: "0",
-                  marginBottom: "100px",
-                  marginLeft: "60px"
+                  borderRadius: "20px",
+                  margin: "80px 0"
                 }}
-              ></div>
-            </td>
-          </form>
-        </div>
+              />
+
+              <button
+                onClick={this.deleteAccount}
+                className="btn btn-danger"
+                style={{
+                  marginLeft: "30px",
+                  marginTop: "400px",
+                  position: "absolute"
+                }}
+              >
+                Delete Account
+              </button>
+            </div>
+            <div
+              style={{
+                position: "absolute",
+                bottom: "0",
+                marginBottom: "100px",
+                marginLeft: "60px"
+              }}
+            ></div>
+          </td>
+        </form>
+      </div>
+    );
+
+    return (
+      <div>
+        <ToolbarCompany />
+        {this.props.company.isLoading && (
+          <div
+            align="center"
+            style={{
+              width: "1600px",
+              marginTop: "150px"
+            }}
+          >
+            <ReactLoading
+              type={"spokes"}
+              color="#000"
+              width="120px"
+              height="120px"
+            ></ReactLoading>
+          </div>
+        )}
+        {!this.props.company.isLoading && renderData}
       </div>
     );
   }
 }
 
-export default ProfileCompany;
+const mapStateToProps = state => {
+  return {
+    company: state.companyList
+  };
+};
+const mapDispatchToProps = dispatch => ({
+  get: url => dispatch(getCompany(url)),
+  update: (url, dataCompany) => dispatch(updateCompany(url, dataCompany)),
+  delete: url => dispatch(deleteCompany(url))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileCompany);

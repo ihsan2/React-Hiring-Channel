@@ -10,9 +10,9 @@ import LoginCompany from "../Welcome/LoginCompany";
 import Main from "../Engineer/Main";
 import ProfileCompany from "../Engineer/ProfileCompany";
 import Company from "../Engineer/Company";
-import EngineerById from "../Engineer/EngineerById";
+import EngineerById from "../Engineer/Engineer";
 import MainCompany from "../Company/MainCompany";
-import Engineer from "../Company/EngineerById";
+import Engineer from "../Company/Engineer";
 import Profile from "../Company/Profile";
 import CompanyId from "../Company/Company";
 

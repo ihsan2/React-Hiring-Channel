@@ -3,9 +3,9 @@ import CardMain from "./CardMain";
 import "./PaginationButton.css";
 import HeaderMainCompany from "../Header/HeaderMainCompany";
 import ReactLoading from "react-loading";
+import jwt_decode from "jwt-decode";
 import { connect } from "react-redux";
 import { getEngineers } from "../../public/redux/actions/engineers";
-require("dotenv").config();
 
 class Main extends Component {
   constructor(props) {
@@ -14,9 +14,10 @@ class Main extends Component {
       search: "",
       limit: 12,
       order: "name",
-      sort: "DESC"
+      sort: "DESC",
+      token: ""
     };
-
+    this.token = localStorage.accessToken;
     this.nextData = this.nextData.bind(this);
     this.prevData = this.prevData.bind(this);
   }
@@ -29,7 +30,10 @@ class Main extends Component {
   searchData = e => {
     this.setState({ search: e.target.value });
     let url = `${process.env.REACT_APP_BASE_URL}/engineers?sort=${this.state.order}&limit=${this.state.limit}&order=${this.state.sort}&searchValue=${e.target.value}`;
-    this.props.get(url);
+    if (this.timeout) clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.props.get(url);
+    }, 750);
   };
 
   sortData = e => {
@@ -69,6 +73,11 @@ class Main extends Component {
   }
 
   componentDidMount() {
+    !this.token
+      ? this.props.history.push("/login-company")
+      : jwt_decode(this.token).role === "engineer" &&
+        this.props.history.push("/company");
+
     this.getData();
   }
 
@@ -105,10 +114,13 @@ class Main extends Component {
 
     return (
       <div className="main1">
-        <HeaderMainCompany
-          onChange={this.searchData}
-          search={this.state.search}
-        />
+        {this.token && (
+          <HeaderMainCompany
+            onChange={this.searchData}
+            search={this.state.search}
+          />
+        )}
+
         <div className="pagination">
           {currentPage > 1 ? (
             <span onClick={this.prevData} className="span-radius1">
@@ -186,7 +198,7 @@ class Main extends Component {
             ></ReactLoading>
           </div>
         )}
-        {this.props.engineer.isFulfilled &&
+        {!this.props.engineer.isRejected &&
           !this.props.engineer.isLoading &&
           renderData}
         {this.props.engineer.isRejected && !this.props.engineer.isLoading && (
@@ -203,7 +215,7 @@ class Main extends Component {
                 fontSize: "40px"
               }}
             >
-              No results
+              No Results
             </h2>
           </div>
         )}

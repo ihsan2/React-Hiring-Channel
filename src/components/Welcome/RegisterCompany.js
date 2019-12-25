@@ -2,8 +2,12 @@ import React, { Component } from "react";
 import ToolbarWelcome from "../Toolbar/ToolbarWelcome";
 import "./RegisterEngineer.css";
 import "./RegisterLogin.css";
-import axios from "axios";
+import ReactLoading from "react-loading";
+import swal from "sweetalert";
+import jwt_decode from "jwt-decode";
 import { Link } from "react-router-dom";
+import { registerCompany } from "../../public/redux/actions/companies";
+import { connect } from "react-redux";
 
 export class RegisterCompany extends Component {
   constructor() {
@@ -16,7 +20,7 @@ export class RegisterCompany extends Component {
       description: "",
       location: ""
     };
-
+    this.token = localStorage.accessToken;
     this.handlerChange = this.handlerChange.bind(this);
     this.handlerChangeImage = this.handlerChangeImage.bind(this);
     this.handlerSubmit = this.handlerSubmit.bind(this);
@@ -45,17 +49,28 @@ export class RegisterCompany extends Component {
     formData.append("description", this.state.description);
     formData.append("location", this.state.location);
 
-    axios({
-      method: "POST",
-      url: `${process.env.REACT_APP_BASE_URL}/companies`,
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    });
-    alert("Success Create Company. Login Now!");
-    this.props.history.push("/login-company");
+    let url = `${process.env.REACT_APP_BASE_URL}/companies`;
+    this.props.register(url, formData);
+    setTimeout(
+      function() {
+        swal("Success!", "Success Create Company. Login Now.", "success").then(
+          isOk => {
+            isOk && this.props.history.push("/login-company");
+          }
+        );
+      }.bind(this),
+      1000
+    );
   };
+
+  componentDidMount() {
+    this.token &&
+      jwt_decode(this.token).role === "company" &&
+      this.props.history.push("/engineer");
+    this.token &&
+      jwt_decode(this.token).role === "engineer" &&
+      this.props.history.push("/company");
+  }
 
   render() {
     return (
@@ -142,15 +157,24 @@ export class RegisterCompany extends Component {
               </div>
               <br />
               <div className={("form-group", "register-engineer-div")}>
-                <br />
-                <input
-                  type="submit"
-                  value="Register"
-                  className="btn btn-primary"
-                  style={{
-                    float: "right"
-                  }}
-                ></input>
+                {this.props.company.isLoading ? (
+                  <div
+                    style={{
+                      float: "right"
+                    }}
+                  >
+                    <ReactLoading type={"spokes"} color="#000" />
+                  </div>
+                ) : (
+                  <input
+                    type="submit"
+                    value="Register"
+                    className="btn btn-primary"
+                    style={{
+                      float: "right"
+                    }}
+                  ></input>
+                )}
               </div>
             </td>
             <td> &nbsp; </td>
@@ -215,4 +239,13 @@ export class RegisterCompany extends Component {
   }
 }
 
-export default RegisterCompany;
+const mapStateToProps = state => {
+  return {
+    company: state.companyList
+  };
+};
+const mapDispatchToProps = dispatch => ({
+  register: (url, dataCompany) => dispatch(registerCompany(url, dataCompany))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterCompany);

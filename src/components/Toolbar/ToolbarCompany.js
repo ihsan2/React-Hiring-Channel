@@ -3,9 +3,10 @@ import "./ToolbarCompany.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+import swal from "sweetalert";
 import {
   faCommentDots,
-  faPowerOff,
+  faSignOutAlt,
   faSearch
 } from "@fortawesome/free-solid-svg-icons";
 import DrawerToggleButton from "../SideDrawer/DrawerToggleButton";
@@ -25,15 +26,24 @@ class ToolbarCompany extends Component {
 
   Logout = e => {
     e.preventDefault();
-    localStorage.removeItem("accessToken");
-    this.props.history.push("/");
+    swal({
+      title: "Logout",
+      text: "Are you sure want to logout?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(isOk => {
+      if (isOk) {
+        localStorage.removeItem("accessToken");
+        this.props.history.push("/");
+        swal("Success!", "You success logout", "success");
+      }
+    });
   };
 
   componentDidMount() {
     const token = localStorage.accessToken;
     const decoded = jwt_decode(token);
-    console.log(decoded.name);
-
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/companies/${decoded.id}`)
       .then(response =>
@@ -123,7 +133,7 @@ class ToolbarCompany extends Component {
                       }}
                     >
                       <FontAwesomeIcon
-                        icon={faPowerOff}
+                        icon={faSignOutAlt}
                         color="#9B9B9B"
                         size="2x"
                       />

@@ -1,31 +1,22 @@
 import React, { Component } from "react";
 import "./Company.css";
-import axios from "axios";
+import ReactLoading from "react-loading";
 import BackImage from "../../assets/backimg.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
 import HeaderMainCompany from "../Header/HeaderMainCompany";
+import { connect } from "react-redux";
+import { getCompany } from "../../public/redux/actions/companies";
 
-export default class Company extends Component {
-  constructor() {
-    super();
-    this.state = {
-      company: []
-    };
-  }
+class Company extends Component {
   componentDidMount() {
     let id = this.props.match.params.id;
-    axios
-      .get(`${process.env.REACT_APP_BASE_URL}/companies/${id}`)
-      .then(response =>
-        this.setState({
-          company: response.data.data
-        })
-      );
+    let url = `${process.env.REACT_APP_BASE_URL}/companies/${id}`;
+    this.props.get(url);
   }
 
   render() {
-    const renderData = this.state.company.map(company => {
+    const renderData = this.props.company.companyList.map(company => {
       return (
         <div id="page-wrap">
           <img
@@ -95,8 +86,34 @@ export default class Company extends Component {
     return (
       <div className="main-id">
         <HeaderMainCompany />
-        {renderData}
+        {this.props.company.isLoading && (
+          <div
+            align="center"
+            style={{
+              width: "1600px"
+            }}
+          >
+            <ReactLoading
+              type={"spokes"}
+              color="#000"
+              width="120px"
+              height="120px"
+            ></ReactLoading>
+          </div>
+        )}
+        {!this.props.company.isLoading && renderData}
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    company: state.companyList
+  };
+};
+const mapDispatchToProps = dispatch => ({
+  get: url => dispatch(getCompany(url))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Company);

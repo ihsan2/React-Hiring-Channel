@@ -2,8 +2,12 @@ import React, { Component } from "react";
 import ToolbarWelcome from "../Toolbar/ToolbarWelcome";
 import "./RegisterEngineer.css";
 import "./RegisterLogin.css";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import { registerEngineer } from "../../public/redux/actions/engineers";
+import { connect } from "react-redux";
+import ReactLoading from "react-loading";
+import swal from "sweetalert";
+import jwt_decode from "jwt-decode";
 
 export class RegisterEngineer extends Component {
   constructor() {
@@ -20,7 +24,7 @@ export class RegisterEngineer extends Component {
       expected_salary: "",
       showcase: ""
     };
-
+    this.token = localStorage.accessToken;
     this.handlerChange = this.handlerChange.bind(this);
     this.handlerChangeImage = this.handlerChangeImage.bind(this);
     this.handlerSubmit = this.handlerSubmit.bind(this);
@@ -53,17 +57,28 @@ export class RegisterEngineer extends Component {
     formData.append("expected_salary", this.state.expected_salary);
     formData.append("showcase", this.state.showcase);
 
-    axios({
-      method: "POST",
-      url: `${process.env.REACT_APP_BASE_URL}/engineers`,
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    });
-    alert("Success Create Engineee. Login Now!");
-    this.props.history.push("/login-engineer");
+    let url = `${process.env.REACT_APP_BASE_URL}/engineers`;
+    this.props.register(url, formData);
+    setTimeout(
+      function() {
+        swal("Success!", "Success Create Engineer. Login Now.", "success").then(
+          isOk => {
+            isOk && this.props.history.push("/login-engineer");
+          }
+        );
+      }.bind(this),
+      1000
+    );
   };
+
+  componentDidMount() {
+    this.token &&
+      jwt_decode(this.token).role === "company" &&
+      this.props.history.push("/engineer");
+    this.token &&
+      jwt_decode(this.token).role === "engineer" &&
+      this.props.history.push("/company");
+  }
 
   render() {
     return (
@@ -200,14 +215,24 @@ export class RegisterEngineer extends Component {
                   required
                 ></input>
                 <br />
-                <input
-                  type="submit"
-                  value="Register"
-                  className="btn btn-primary"
-                  style={{
-                    float: "right"
-                  }}
-                ></input>
+                {this.props.engineer.isLoading ? (
+                  <div
+                    style={{
+                      float: "right"
+                    }}
+                  >
+                    <ReactLoading type={"spokes"} color="#000" />
+                  </div>
+                ) : (
+                  <input
+                    type="submit"
+                    value="Register"
+                    className="btn btn-primary"
+                    style={{
+                      float: "right"
+                    }}
+                  ></input>
+                )}
               </div>
             </td>
             <td> &nbsp; </td>
@@ -272,4 +297,13 @@ export class RegisterEngineer extends Component {
   }
 }
 
-export default RegisterEngineer;
+const mapStateToProps = state => {
+  return {
+    engineer: state.engineerList
+  };
+};
+const mapDispatchToProps = dispatch => ({
+  register: (url, dataEngineer) => dispatch(registerEngineer(url, dataEngineer))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterEngineer);

@@ -1,17 +1,20 @@
 import React, { Component } from "react";
 import ToolbarWelcome from "../Toolbar/ToolbarWelcome";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import ReactLoading from "react-loading";
+import swal from "sweetalert";
+import jwt_decode from "jwt-decode";
+import { connect } from "react-redux";
+import { loginEngineer } from "../../public/redux/actions/login";
 
-export class LoginEngineer extends Component {
+class LoginEngineer extends Component {
   constructor() {
     super();
     this.state = {
       email: "",
-      password: "",
-      isLoading: false
+      password: ""
     };
+    this.token = localStorage.accessToken;
     this.handlerChange = this.handlerChange.bind(this);
   }
 
@@ -23,35 +26,33 @@ export class LoginEngineer extends Component {
 
   handlerSubmit = event => {
     event.preventDefault();
-    this.setState({ isLoading: true });
-    axios
-      .post(
-        `${process.env.REACT_APP_BASE_URL}/auth/engineer`,
-        {
-          email: this.state.email,
-          password: this.state.password
-        },
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      )
+    const { email, password } = this.state;
+    const data = { email, password };
+    this.props
+      .login(data)
       .then(res => {
-        localStorage.setItem("accessToken", res.data.accessToken);
-        alert("Success Login!");
-        this.props.history.push("/company");
-        this.setState({
-          isLoading: false
+        localStorage.setItem("accessToken", this.props.loginData.accessToken);
+        swal("Success!", "You success to login!", "success").then(isOk => {
+          isOk && this.props.history.push("/company");
         });
       })
       .catch(err => {
-        alert("Error! Email or Password not found");
-        this.setState({
-          isLoading: false
-        });
+        swal(
+          "Failed!",
+          "Make sure the email and password are correct.",
+          "error"
+        );
       });
   };
+
+  componentDidMount() {
+    this.token &&
+      jwt_decode(this.token).role === "company" &&
+      this.props.history.push("/engineer");
+    this.token &&
+      jwt_decode(this.token).role === "engineer" &&
+      this.props.history.push("/company");
+  }
 
   render() {
     return (
@@ -92,21 +93,6 @@ export class LoginEngineer extends Component {
                   onChange={this.handlerChange}
                 ></input>
               </div>
-              {/* <div
-                className="form-group"
-                style={{
-                  width: "720px"
-                }}
-              >
-                <p
-                  style={{
-                    color: "red"
-                  }}
-                >
-                  {" "}
-                  {this.state.passwordError}{" "}
-                </p>
-              </div> */}
               <br />
               <div
                 className="form-group"
@@ -114,7 +100,7 @@ export class LoginEngineer extends Component {
                   width: "720px"
                 }}
               >
-                {this.state.isLoading ? (
+                {this.props.loginData.isLoading ? (
                   <div
                     style={{
                       float: "right"
@@ -197,4 +183,13 @@ export class LoginEngineer extends Component {
   }
 }
 
-export default LoginEngineer;
+const mapStateToProps = state => {
+  return {
+    loginData: state.login
+  };
+};
+const mapDispatchToProps = dispatch => ({
+  login: data => dispatch(loginEngineer(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginEngineer);

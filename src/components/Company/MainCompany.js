@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CardMainCompany from "./CardMainCompany";
 import HeaderMain from "../Header/HeaderMain";
 import ReactLoading from "react-loading";
+import jwt_decode from "jwt-decode";
 import { connect } from "react-redux";
 import { getCompanies } from "../../public/redux/actions/companies";
 
@@ -11,6 +12,8 @@ class MainCompany extends Component {
     this.state = {
       search: ""
     };
+    this.token = localStorage.accessToken;
+    this.timeout = 0;
   }
 
   getData() {
@@ -21,10 +24,18 @@ class MainCompany extends Component {
   searchData = e => {
     this.setState({ search: e.target.value });
     let url = `${process.env.REACT_APP_BASE_URL}/companies?search=${e.target.value}`;
-    this.props.get(url);
+    if (this.timeout) clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.props.get(url);
+    }, 750);
   };
 
   componentDidMount() {
+    !this.token
+      ? this.props.history.push("/login-engineer")
+      : jwt_decode(this.token).role === "company" &&
+        this.props.history.push("/engineer");
+
     this.getData();
   }
 
@@ -41,7 +52,9 @@ class MainCompany extends Component {
 
     return (
       <div className="main">
-        <HeaderMain onChange={this.searchData} search={this.state.search} />
+        {this.token && (
+          <HeaderMain onChange={this.searchData} search={this.state.search} />
+        )}
         {this.props.company.isLoading && (
           <div
             align="center"
@@ -76,7 +89,7 @@ class MainCompany extends Component {
                   fontSize: "40px"
                 }}
               >
-                Data Not Found
+                No Results
               </h2>
             </div>
           )}
