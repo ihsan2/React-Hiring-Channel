@@ -6,14 +6,20 @@ import swal from "sweetalert";
 import jwt_decode from "jwt-decode";
 import { connect } from "react-redux";
 import { loginEngineer } from "../../public/redux/actions/login";
+import { getEngineers } from "../../public/redux/actions/engineers";
 
 class LoginEngineer extends Component {
   constructor() {
     super();
     this.state = {
       email: "",
-      password: ""
+      emailUser: [],
+      password: "",
+      emailErr: "",
+      passwordErr: ""
     };
+    this.validationEmail = 1;
+    this.validationPassword = 1;
     this.token = localStorage.accessToken;
     this.handlerChange = this.handlerChange.bind(this);
   }
@@ -24,28 +30,90 @@ class LoginEngineer extends Component {
     });
   };
 
+  validateForm = () => {
+    const { email, password } = this.state;
+    const emailCheck = this.state.emailUser.findIndex(en => en.email === email);
+    const emailRegex = `^[a-z0-9][\-_\.\+\!\#\$\%\&\'\*\/\=\?\^\`\{\|]{0,1}([a-z0-9][\-_\.\+\!\#\$\%\&\'\*\/\=\?\^\`\{\|]{0,1})*[a-z0-9]@[a-z0-9][-\.]{0,1}([a-z][-\.]{0,1})*[a-z0-9]\.[a-z0-9]{1,}([\.\-]{0,1}[a-z]){0,}[a-z0-9]{0,}$`;
+    if (!email) {
+      this.setState({
+        emailErr: "Email Required!"
+      });
+      this.validationEmail = 1;
+    } else if (!email.match(emailRegex)) {
+      this.setState({
+        emailErr: "Invalid Email!"
+      });
+      this.validationEmail = 1;
+    } else if (emailCheck === -1) {
+      this.setState({
+        emailErr: "User / Email Not Registered!"
+      });
+      this.validationEmail = 1;
+    } else {
+      this.setState({
+        emailErr: ""
+      });
+      this.validationEmail = 0;
+    }
+
+    if (!password) {
+      this.setState({
+        passwordErr: "Password Required!"
+      });
+      this.validationPassword = 1;
+    } else if (password.length < 4) {
+      this.setState({
+        passwordErr: "Minimun Password Length is 4!"
+      });
+      this.validationPassword = 1;
+    } else {
+      this.setState({
+        passwordErr: ""
+      });
+      this.validationPassword = 0;
+    }
+  };
+
   handlerSubmit = event => {
     event.preventDefault();
     const { email, password } = this.state;
     const data = { email, password };
-    this.props
-      .login(data)
-      .then(res => {
-        localStorage.setItem("accessToken", this.props.loginData.accessToken);
-        swal("Success!", "You success to login!", "success").then(isOk => {
-          isOk && this.props.history.push("/company");
+
+    this.validateForm();
+    if (!this.validationEmail && !this.validationPassword) {
+      this.props
+        .login(data)
+        .then(res => {
+          localStorage.setItem("accessToken", this.props.loginData.accessToken);
+          swal("Success!", "You success to login!", "success").then(isOk => {
+            isOk && this.props.history.push("/company");
+          });
+        })
+        .catch(err => {
+          swal(
+            "Failed!",
+            "Make sure the email and password are correct.",
+            "error"
+          );
         });
-      })
-      .catch(err => {
-        swal(
-          "Failed!",
-          "Make sure the email and password are correct.",
-          "error"
-        );
-      });
+    }
   };
 
   componentDidMount() {
+    this.props.get(`${process.env.REACT_APP_BASE_URL}/engineers`).then(() => {
+      this.props.engineer.pageDetail.map(page => {
+        return this.props
+          .get(
+            `${process.env.REACT_APP_BASE_URL}/engineers?limit=${page.totalRow}`
+          )
+          .then(() => {
+            this.setState({
+              emailUser: this.props.engineer.engineerList
+            });
+          });
+      });
+    });
+
     this.token &&
       jwt_decode(this.token).role === "company" &&
       this.props.history.push("/engineer");
@@ -70,12 +138,22 @@ class LoginEngineer extends Component {
               >
                 <label for="email">Email</label>
                 <input
-                  type="email"
+                  type="text"
                   name="email"
                   className="form-control"
                   value={this.state.email}
                   onChange={this.handlerChange}
                 ></input>
+                {this.state.emailErr && (
+                  <label
+                    style={{
+                      color: "red",
+                      fontStyle: "italic"
+                    }}
+                  >
+                    {this.state.emailErr}
+                  </label>
+                )}
               </div>
               <br />
               <div
@@ -92,6 +170,16 @@ class LoginEngineer extends Component {
                   value={this.state.password}
                   onChange={this.handlerChange}
                 ></input>
+                {this.state.passwordErr && (
+                  <label
+                    style={{
+                      color: "red",
+                      fontStyle: "italic"
+                    }}
+                  >
+                    {this.state.passwordErr}
+                  </label>
+                )}
               </div>
               <br />
               <div
@@ -185,11 +273,13 @@ class LoginEngineer extends Component {
 
 const mapStateToProps = state => {
   return {
-    loginData: state.login
+    loginData: state.login,
+    engineer: state.engineerList
   };
 };
 const mapDispatchToProps = dispatch => ({
-  login: data => dispatch(loginEngineer(data))
+  login: data => dispatch(loginEngineer(data)),
+  get: url => dispatch(getEngineers(url))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginEngineer);

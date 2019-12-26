@@ -8,7 +8,7 @@
 
 .pagination select {
   margin-left: 10px;
-  border-radius: 20px;
+  border-radius: 5px;
 }
 
 .pagination select:focus {
@@ -32,10 +32,10 @@
 }
 
 .span-radius1 {
-  border-radius: 20px 0 0 20px;
+  border-radius: 5px 0 0 5px;
 }
 .span-radius2 {
-  border-radius: 0 20px 20px 0;
+  border-radius: 0 5px 5px 0;
 }
 
 h3 {
