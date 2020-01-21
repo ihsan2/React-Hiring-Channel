@@ -58,11 +58,11 @@ API_KEY_URL=YOUR_HOST_URL
 ## Screenshots
 
 <div align="center">
-    <img width="600" src="./screenshot/r1.PNG">   
-    <img width="600" src="./screenshot/r2.PNG">  
-    <img width="600" src="./screenshot/r3.PNG">  
-    <img width="600" src="./screenshot/r4.PNG">  
-    <img width="600" src="./screenshot/r5.PNG">  
+    <img width="750" src="./screenshot/r1.PNG">   
+    <img width="750" src="./screenshot/r2.PNG">  
+    <img width="750" src="./screenshot/r3.PNG">  
+    <img width="750" src="./screenshot/r4.PNG">  
+    <img width="750" src="./screenshot/r5.PNG">  
 </div>
 
 ## Related Project (Backend)
