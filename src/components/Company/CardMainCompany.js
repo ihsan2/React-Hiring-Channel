@@ -19,7 +19,11 @@ function CardMainCompany({ company }) {
         <img
           id="img"
           alt={image}
-          src={`${process.env.REACT_APP_HOST}/company/${image}`}
+          src={
+            image
+              ? `${process.env.REACT_APP_HOST}/company/${image}`
+              : "https://www.logoground.com/uploads/201658352016-01-214991427dental-association-logo.jpg"
+          }
         />
       </Link>
       <div className="main__profile">
