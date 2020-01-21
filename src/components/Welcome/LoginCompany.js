@@ -33,7 +33,7 @@ class LoginCompany extends Component {
   validateForm = () => {
     const { email, password } = this.state;
     const emailCheck = this.state.emailUser.findIndex(en => en.email === email);
-    const emailRegex = `^[a-z0-9][\-_\.\+\!\#\$\%\&\'\*\/\=\?\^\`\{\|]{0,1}([a-z0-9][\-_\.\+\!\#\$\%\&\'\*\/\=\?\^\`\{\|]{0,1})*[a-z0-9]@[a-z0-9][-\.]{0,1}([a-z][-\.]{0,1})*[a-z0-9]\.[a-z0-9]{1,}([\.\-]{0,1}[a-z]){0,}[a-z0-9]{0,}$`;
+    const emailRegex = require('regex-email')
     if (!email) {
       this.setState({
         emailErr: "Email Required!"

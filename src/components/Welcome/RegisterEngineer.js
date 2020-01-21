@@ -80,7 +80,7 @@ export class RegisterEngineer extends Component {
       showcase
     } = this.state;
     const emailCheck = this.state.emailUser.findIndex(en => en.email === email);
-    const emailRegex = `^[a-z0-9][\-_\.\+\!\#\$\%\&\'\*\/\=\?\^\`\{\|]{0,1}([a-z0-9][\-_\.\+\!\#\$\%\&\'\*\/\=\?\^\`\{\|]{0,1})*[a-z0-9]@[a-z0-9][-\.]{0,1}([a-z][-\.]{0,1})*[a-z0-9]\.[a-z0-9]{1,}([\.\-]{0,1}[a-z]){0,}[a-z0-9]{0,}$`;
+    const emailRegex = require("regex-email");
     const maxSize = 1024 * 1024 * 7;
 
     if (!name) {

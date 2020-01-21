@@ -165,7 +165,6 @@ export class ProfileCompany extends Component {
                 name="image"
                 className="form-control"
                 onChange={this.handlerChangeImage}
-                required
                 // value={this.state.name}
               ></input>
               {/* <input
