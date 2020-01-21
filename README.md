@@ -1,76 +1,85 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 align="center">Hiring Channel App</h1>
+<p align="center">
+  <img width="250" src="./public/logo512.png"/>
+</p>
+<p align="center">
+  Built with React.js.
+</p>
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Introduction](#introduction)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Usage](#usage-for-development)
+- [Create Environment Variable](#create-environment-variable)
+- [Screenshots](#screenshots)
+- [Related Project](#related-project-backend)
+- [Contributors](#contributors)
 
-### `yarn start`
+## Introduction
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<b>Hiring Channel App</b> is a website that can facilitate and connect between employers / companies and job seekers or engineers
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Features
 
-### `yarn test`
+- Users must sign up and sign in to use this application
+- Employers/Companies can see list engineers
+- Engineers can see list companies
+- And others
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Requirements
 
-### `yarn build`
+- [`npm`](https://www.npmjs.com/get-npm)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Usage for development
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+1. Open your terminal or command prompt
+2. Type `git clone https://github.com/ihsan2/React-Hiring-Channel.git`
+3. Open the folder and type `npm install` for install dependencies
+4. Create Environment Variable [here](#create-environment-variable)
+5. Before run this, you must run backend first
+6. Type `npm start` for run this app.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Create Environment Variable
 
-### `yarn eject`
+```
+$ cp .env.example .env
+$ nano .env.development.local
+$ nano .env.production.local
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+# Set API KEY
+API_KEY_IMAGE=YOUR_HOST_IMAGE
+API_KEY_URL=YOUR_HOST_URL
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Screenshots
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+<div align="center">
+    <img width="600" src="./screenshot/r1.png">   
+    <img width="600" src="./screenshot/r2.png">  
+    <img width="600" src="./screenshot/r3.png">  
+    <img width="600" src="./screenshot/r4.png">  
+    <img width="600" src="./screenshot/r5.png">  
+</div>
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Related Project (Backend)
 
-## Learn More
+- [`Backend RESTful API Hiring Channel App`](https://github.com/ihsan2/RESTful-API-Hiring-Channel-App.git)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Contributors
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-
-## Screenshot
-
-![Register Screen](./screenshot/r1.PNG)
-![Login Screen](./screenshot/r2.PNG)
-![Home Screen](./screenshot/r3.PNG)
-![Detail](./screenshot/r4.PNG)
-![Update](./screenshot/r5.PNG)
+<center>
+  <table>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/ihsan2">
+          <img width="100" src="./src/public/assets/ihsan.jpg" alt="Nur Ihsan"><br/>
+          <sub><b>Nur Ihsan</b></sub>
+        </a>
+      </td>
+    </tr>
+  </table>
+</center>
