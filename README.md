@@ -58,11 +58,11 @@ API_KEY_URL=YOUR_HOST_URL
 ## Screenshots
 
 <div align="center">
-    <img width="600" src="./screenshot/r1.png">   
-    <img width="600" src="./screenshot/r2.png">  
-    <img width="600" src="./screenshot/r3.png">  
-    <img width="600" src="./screenshot/r4.png">  
-    <img width="600" src="./screenshot/r5.png">  
+    <img width="600" src="./screenshot/r1.PNG">   
+    <img width="600" src="./screenshot/r2.PNG">  
+    <img width="600" src="./screenshot/r3.PNG">  
+    <img width="600" src="./screenshot/r4.PNG">  
+    <img width="600" src="./screenshot/r5.PNG">  
 </div>
 
 ## Related Project (Backend)
@@ -76,7 +76,7 @@ API_KEY_URL=YOUR_HOST_URL
     <tr>
       <td align="center">
         <a href="https://github.com/ihsan2">
-          <img width="100" src="./src/public/assets/ihsan.jpg" alt="Nur Ihsan"><br/>
+          <img width="100" src="./public/ihsan.jpg" alt="Nur Ihsan"><br/>
           <sub><b>Nur Ihsan</b></sub>
         </a>
       </td>
